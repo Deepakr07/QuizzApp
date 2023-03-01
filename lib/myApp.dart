@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'quizBrain.dart';
 
 class myApp extends StatefulWidget {
   const myApp({Key? key}) : super(key: key);
@@ -31,19 +32,15 @@ class QuizApp extends StatefulWidget {
 }
 
 class _QuizAppState extends State<QuizApp> {
-  List<String> question = [
-    'Is Delhi the capital of India?',
-    'Is Tesla Owned by Ambani?',
-    'Indi is qualified for Qatar world cup'
-  ];
-  List<Icon> scoreKeeper = [
-    Icon(Icons.check, color: Colors.green),
-    Icon(
-      Icons.close,
-      color: Colors.red,
-    )
-  ];
-  int colorCount = 0, scoreCount = 0;
+  // List<String> question = [
+  //   'Is Delhi the capital of India?',
+  //   'Is Tesla Owned by Ambani?',
+  //   'Indi is qualified for Qatar world cup'
+  // ];
+  QuizBrain quizBrain = QuizBrain();
+  List<Icon> scoreKeeper = [];
+  int questionNumber = 0, scoreCount = 0;
+  bool correctAnswer = true;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -56,7 +53,7 @@ class _QuizAppState extends State<QuizApp> {
             padding: const EdgeInsets.all(15.0),
             child: Center(
               child: Text(
-                question[colorCount],
+                quizBrain.questionBank[questionNumber].questionText,
                 style: TextStyle(fontSize: 25, color: Colors.white),
               ),
             ),
@@ -71,14 +68,33 @@ class _QuizAppState extends State<QuizApp> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
-                setState(() {
-                  if (colorCount == 2) {
-                    colorCount = 0;
-                  } else {
-                    colorCount++;
-                  }
-                  scoreCount = 1;
-                });
+                correctAnswer =
+                    quizBrain.questionBank[questionNumber].questionAnswer;
+                if (correctAnswer == true) {
+                  //print("user made it right");
+                  setState(() {
+                    questionNumber >= 12
+                        ? questionNumber = 0
+                        : questionNumber++;
+                    //questionNumber++;
+                    scoreKeeper.add(Icon(
+                      Icons.check,
+                      color: Colors.green,
+                    ));
+                  });
+                } else
+                  setState(() {
+                    //print('User made it wrong');
+                    questionNumber >= 12
+                        ? questionNumber = 0
+                        : questionNumber++;
+                    scoreKeeper.add(
+                      Icon(
+                        Icons.close,
+                        color: Colors.red,
+                      ),
+                    );
+                  });
               },
               color: Colors.green,
             ),
@@ -93,19 +109,41 @@ class _QuizAppState extends State<QuizApp> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
-                setState(() {
-                  if (colorCount == 2) {
-                    colorCount = 0;
-                  } else {
-                    colorCount++;
-                  }
-                  scoreCount = 1;
-                });
+                correctAnswer =
+                    quizBrain.questionBank[questionNumber].questionAnswer;
+                if (correctAnswer == true) {
+                  //print("user made it right");
+                  setState(() {
+                    questionNumber >= 12
+                        ? questionNumber = 0
+                        : questionNumber++;
+                    //questionNumber++;
+                    scoreKeeper.add(Icon(
+                      Icons.check,
+                      color: Colors.green,
+                    ));
+                  });
+                } else
+                  setState(() {
+                    //print('User made it wrong');
+                    questionNumber >= 12
+                        ? questionNumber = 0
+                        : questionNumber++;
+                    scoreKeeper.add(
+                      Icon(
+                        Icons.close,
+                        color: Colors.red,
+                      ),
+                    );
+                  });
               },
               color: Colors.red,
             ),
           ),
         ),
+        Row(
+          children: scoreKeeper,
+        )
       ],
     );
   }
