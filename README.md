@@ -1,16 +1,3 @@
 # quizz_app
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+quizz_app is a simple quiz app developed using flutter. The main feature of this app is that it displays 'check mark' (for correct answers) and a 'cross mark' (for wrong answers) after each question the user attempts.
+This app helped me to learn more about lists and also helped me gain more information on how to modularize the code by implementing basic principles of Object Oriented Programming .
