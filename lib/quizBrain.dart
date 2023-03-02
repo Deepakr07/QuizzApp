@@ -34,8 +34,6 @@ class QuizBrain {
         a: true)
   ];
 
-  var context;
-
   String getQuestion() {
     return questionBank[questionNumber].questionText;
   }
@@ -47,15 +45,6 @@ class QuizBrain {
   void nextQuestion() {
     if (questionNumber < questionBank.length - 1) {
       questionNumber++;
-    }
-  }
-
-  void isFinished() {
-    if (questionNumber < questionBank.length) {
-      Alert(context: context, title: "RFLUTTER", desc: "End is reached").show();
-      questionNumber = 0;
-    } else {
-      nextQuestion();
     }
   }
 }
