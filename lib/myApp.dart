@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'quizBrain.dart';
 
 class myApp extends StatefulWidget {
@@ -32,14 +33,8 @@ class QuizApp extends StatefulWidget {
 }
 
 class _QuizAppState extends State<QuizApp> {
-  // List<String> question = [
-  //   'Is Delhi the capital of India?',
-  //   'Is Tesla Owned by Ambani?',
-  //   'Indi is qualified for Qatar world cup'
-  // ];
   QuizBrain quizBrain = QuizBrain();
   List<Icon> scoreKeeper = [];
-  int questionNumber = 0, scoreCount = 0;
   bool correctAnswer = true;
   @override
   Widget build(BuildContext context) {
@@ -53,7 +48,7 @@ class _QuizAppState extends State<QuizApp> {
             padding: const EdgeInsets.all(15.0),
             child: Center(
               child: Text(
-                quizBrain.questionBank[questionNumber].questionText,
+                quizBrain.getQuestion(),
                 style: TextStyle(fontSize: 25, color: Colors.white),
               ),
             ),
@@ -68,33 +63,40 @@ class _QuizAppState extends State<QuizApp> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
-                correctAnswer =
-                    quizBrain.questionBank[questionNumber].questionAnswer;
-                if (correctAnswer == true) {
-                  //print("user made it right");
-                  setState(() {
-                    questionNumber >= 12
-                        ? questionNumber = 0
-                        : questionNumber++;
-                    //questionNumber++;
-                    scoreKeeper.add(Icon(
-                      Icons.check,
-                      color: Colors.green,
-                    ));
-                  });
-                } else
-                  setState(() {
-                    //print('User made it wrong');
-                    questionNumber >= 12
-                        ? questionNumber = 0
-                        : questionNumber++;
-                    scoreKeeper.add(
-                      Icon(
-                        Icons.close,
-                        color: Colors.red,
-                      ),
-                    );
-                  });
+                if (questionNumber >= quizBrain.questionBank.length - 1) {
+                  Alert(
+                          context: context,
+                          title: "Completed",
+                          desc: "You have completed the Quiz")
+                      .show();
+                  scoreKeeper.removeRange(0, quizBrain.questionBank.length - 1);
+                  questionNumber = 0;
+                } else {
+                  correctAnswer = quizBrain.getAnswer();
+                  if (correctAnswer == true) {
+                    //print("user made it right");
+                    setState(() {
+                      quizBrain.nextQuestion();
+
+                      //questionNumber++;
+                      scoreKeeper.add(Icon(
+                        Icons.check,
+                        color: Colors.green,
+                      ));
+                    });
+                  } else {
+                    setState(() {
+                      //print('User made it wrong');
+                      quizBrain.nextQuestion();
+                      scoreKeeper.add(
+                        Icon(
+                          Icons.close,
+                          color: Colors.red,
+                        ),
+                      );
+                    });
+                  }
+                }
               },
               color: Colors.green,
             ),
@@ -109,33 +111,39 @@ class _QuizAppState extends State<QuizApp> {
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
-                correctAnswer =
-                    quizBrain.questionBank[questionNumber].questionAnswer;
-                if (correctAnswer == true) {
-                  //print("user made it right");
-                  setState(() {
-                    questionNumber >= 12
-                        ? questionNumber = 0
-                        : questionNumber++;
-                    //questionNumber++;
-                    scoreKeeper.add(Icon(
-                      Icons.check,
-                      color: Colors.green,
-                    ));
-                  });
-                } else
-                  setState(() {
-                    //print('User made it wrong');
-                    questionNumber >= 12
-                        ? questionNumber = 0
-                        : questionNumber++;
-                    scoreKeeper.add(
-                      Icon(
-                        Icons.close,
-                        color: Colors.red,
-                      ),
-                    );
-                  });
+                if (questionNumber >= quizBrain.questionBank.length - 1) {
+                  questionNumber = 0;
+                  quizBrain.nextQuestion();
+
+                  Alert(
+                          context: context,
+                          title: "Completed",
+                          desc: "You have completed the Quiz")
+                      .show();
+                  scoreKeeper.removeRange(0, quizBrain.questionBank.length - 1);
+                } else {
+                  correctAnswer = quizBrain.getAnswer();
+                  if (correctAnswer == false) {
+                    quizBrain.nextQuestion();
+                    setState(() {
+                      //questionNumber++;
+                      scoreKeeper.add(Icon(
+                        Icons.check,
+                        color: Colors.green,
+                      ));
+                    });
+                  } else
+                    setState(() {
+                      //print('User made it wrong');
+                      quizBrain.nextQuestion();
+                      scoreKeeper.add(
+                        Icon(
+                          Icons.close,
+                          color: Colors.red,
+                        ),
+                      );
+                    });
+                }
               },
               color: Colors.red,
             ),

@@ -1,4 +1,7 @@
 import 'questions.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+
+int questionNumber = 0;
 
 class QuizBrain {
   List<Question> questionBank = [
@@ -30,4 +33,29 @@ class QuizBrain {
         t: 'In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat.',
         a: true)
   ];
+
+  var context;
+
+  String getQuestion() {
+    return questionBank[questionNumber].questionText;
+  }
+
+  bool getAnswer() {
+    return questionBank[questionNumber].questionAnswer;
+  }
+
+  void nextQuestion() {
+    if (questionNumber < questionBank.length - 1) {
+      questionNumber++;
+    }
+  }
+
+  void isFinished() {
+    if (questionNumber < questionBank.length) {
+      Alert(context: context, title: "RFLUTTER", desc: "End is reached").show();
+      questionNumber = 0;
+    } else {
+      nextQuestion();
+    }
+  }
 }
